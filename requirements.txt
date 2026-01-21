@@ -1,0 +1,10 @@
+Required library:
+
+- pandas
+- numpy
+- mysql connector python
+
+raw datas size (REES46 datasets)
+
+Oct: 5.28GB
+Nov: 8.39GB

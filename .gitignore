@@ -1,0 +1,13 @@
+# Ignore Data Files 
+data/
+*.csv
+*.zip
+
+# Ignore System Files
+__pycache__/
+.DS_Store
+.vscode/
+
+# Ignore Credentials
+secrets.py
+.env
