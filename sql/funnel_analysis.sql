@@ -1,9 +1,7 @@
--- funnel_analysis.sql
--- Aggregation queries that power the funnel summary table and dashboard.
+-- Aggregation queries that feed the Power BI dashboard.
 
 USE ecommerce_db;
 
--- Create the materialized summary table
 CREATE TABLE IF NOT EXISTS funnel_summary_final (
     event_date DATE,
     event_type VARCHAR(20),
@@ -13,8 +11,7 @@ CREATE TABLE IF NOT EXISTS funnel_summary_final (
     total_revenue DECIMAL(15, 2)
 );
 
--- Load funnel metrics per day
--- Run this after raw_events is fully populated.
+-- Daily funnel metrics. Run after raw_events is fully loaded.
 INSERT INTO funnel_summary_final (event_date, event_type, unique_sessions, unique_users, total_events, total_revenue)
 SELECT
     DATE(event_time) AS event_date,
@@ -27,7 +24,7 @@ FROM raw_events
 GROUP BY DATE(event_time), event_type
 ORDER BY event_date, FIELD(event_type, 'view', 'cart', 'purchase');
 
--- Overall funnel conversion rates
+-- Overall conversion: total sessions per stage across the whole period.
 SELECT
     event_type,
     COUNT(DISTINCT user_session) AS unique_sessions,
@@ -37,7 +34,7 @@ FROM raw_events
 GROUP BY event_type
 ORDER BY FIELD(event_type, 'view', 'cart', 'purchase');
 
--- Drop-off between funnel stages
+-- Stage-to-stage conversion and drop-off.
 WITH funnel AS (
     SELECT
         event_type,
@@ -57,7 +54,7 @@ LEFT JOIN funnel prev
     OR (curr.event_type = 'purchase' AND prev.event_type = 'cart')
 ORDER BY FIELD(curr.event_type, 'view', 'cart', 'purchase');
 
--- Top 10 categories by drop-off (cart but no purchase)
+-- Top 10 categories where users add to cart but never buy.
 WITH cart_sessions AS (
     SELECT DISTINCT user_session, category_code
     FROM raw_events

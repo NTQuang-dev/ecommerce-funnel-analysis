@@ -1,6 +1,3 @@
--- schema.sql
--- Database for project
-
 CREATE DATABASE IF NOT EXISTS ecommerce_db;
 USE ecommerce_db;
 
@@ -16,6 +13,6 @@ CREATE TABLE IF NOT EXISTS raw_events (
     user_session VARCHAR(50)
 );
 
--- Creating index on user_session and event_type for Funnel Analysis
+-- Sessions and event types are filtered on every funnel query.
 CREATE INDEX idx_session ON raw_events(user_session);
 CREATE INDEX idx_event ON raw_events(event_type);
