@@ -10,13 +10,16 @@ Author: [Your Name]
 
 import pandas as pd
 from sqlalchemy import create_engine
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 # Configuration MySQL connection
-DB_USER = "root"
-DB_PASS = "root"
-DB_HOST = "localhost"
-DB_NAME = "ecommerce_db"
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_NAME = os.getenv("DB_NAME", "ecommerce_db")
 
 def load_cleaned_data(file_name: str) -> None:
     """

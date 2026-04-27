@@ -1,12 +1,16 @@
-# Ignore Data Files 
+# Ignore Data Files
 data/
 *.csv
 *.zip
+
+# Ignore Power BI files (too large for GitHub)
+*.pbix
 
 # Ignore System Files
 __pycache__/
 .DS_Store
 .vscode/
+.claude/
 
 # Ignore Credentials
 secrets.py
